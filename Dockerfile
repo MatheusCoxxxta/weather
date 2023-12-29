@@ -1,13 +1,28 @@
-FROM node:20.0-alpine
+# Build stage
+FROM node:lts-alpine AS builder
 
-WORKDIR /opt/app
+USER node
+WORKDIR /home/node
 
-COPY . .
-
+COPY package*.json .
 RUN yarn
 
+COPY --chown=node:node . .
 RUN yarn build
 
-EXPOSE 3334
 
-CMD ["yarn", "start"]
+# Final run stage
+FROM node:lts-alpine
+
+ENV NODE_ENV production
+USER node
+WORKDIR /home/node
+
+COPY --from=builder --chown=node:node /home/node/package*.json .
+COPY --from=builder --chown=node:node /home/node/node_modules/ ./node_modules
+COPY --from=builder --chown=node:node /home/node/dist/ ./dist
+
+ARG PORT
+EXPOSE ${PORT:-3334}
+
+CMD ["node", "dist/main.js"]
