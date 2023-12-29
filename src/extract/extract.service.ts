@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { Cron } from '@nestjs/schedule';
 import { TemperatureService } from 'src/shrared/providers/TemperatureProvider/temperature.service';
 import DataStore from '../data/data.respository';
 
@@ -23,8 +23,6 @@ export class ExtractService {
       };
 
       this.dataStore.add(data);
-
-      console.log(data);
     }
   }
 }

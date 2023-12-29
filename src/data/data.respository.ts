@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { isAfter, isBefore } from 'date-fns';
-import { ListTemperatureInput } from 'src/monitor/monitor.service';
 import { TemperatureDetails } from 'src/shrared/providers/TemperatureProvider/temperature.interface';
 
 export interface TemperatureModel {
