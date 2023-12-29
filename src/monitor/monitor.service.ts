@@ -1,15 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import DataStore from 'src/data/data.respository';
-import { TemperatureService } from 'src/shrared/providers/TemperatureProvider/temperature.service';
+import createDateFromString from 'src/shrared/utils/createDateFromString';
+
+export interface ListTemperatureInput {
+  city: 'Sao Paulo' | 'Florianopolis' | 'Curitiba';
+  startDate: string;
+  endDate: string;
+}
 
 @Injectable()
 export class MonitorService {
-  constructor(
-    private temperatureService: TemperatureService,
-    private dataStore: DataStore,
-  ) {}
+  constructor(private dataStore: DataStore) {}
 
-  list() {
-    return this.dataStore.get();
+  list({ city, startDate, endDate }: ListTemperatureInput) {
+    const formattedStartDate = createDateFromString(startDate);
+    const formattedEndDate = createDateFromString(endDate);
+
+    const temperatures = this.dataStore.get({
+      city,
+      startDate: createDateFromString(startDate),
+      endDate: createDateFromString(endDate),
+    });
+
+    return {
+      interval: {
+        start: formattedStartDate.toLocaleDateString(),
+        end: formattedEndDate.toLocaleDateString(),
+      },
+      data: temperatures,
+    };
   }
 }
