@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TemperatureService } from './temperature.service';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [],
+  imports: [HttpModule],
   providers: [TemperatureService],
   exports: [TemperatureService],
 })
