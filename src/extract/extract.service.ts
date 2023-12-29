@@ -12,17 +12,19 @@ export class ExtractService {
     private dataStore: DataStore,
   ) {}
 
-  @Cron('* /15 * * * *')
+  @Cron('*/15 * * * *')
   async store() {
     const cities = await this.temperatureService.getFrom(DEFAULT_CITIES);
 
     for (const city of cities) {
-      this.dataStore.add({
+      const data = {
         when: new Date(),
         ...city,
-      });
+      };
 
-      console.log(this.dataStore.get());
+      this.dataStore.add(data);
+
+      console.log(data);
     }
   }
 }
