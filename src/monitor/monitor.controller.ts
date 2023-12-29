@@ -1,12 +1,20 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { MonitorService } from './monitor.service';
+import GetTemperaturesValidator from './monitor.validator';
 
 @Controller()
 export class MonitorController {
   constructor(private readonly monitorService: MonitorService) {}
 
   @Get('/monitor')
-  index() {
-    return this.monitorService.list();
+  @UsePipes(ValidationPipe)
+  index(@Query() { city, startDate, endDate }: GetTemperaturesValidator) {
+    return this.monitorService.list({ city, startDate, endDate });
   }
 }
