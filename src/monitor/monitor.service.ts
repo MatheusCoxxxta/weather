@@ -9,7 +9,7 @@ export class MonitorService {
     private dataStore: DataStore,
   ) {}
 
-  getHello() {
+  list() {
     return this.dataStore.get();
   }
 }
