@@ -12,7 +12,7 @@ export class ExtractService {
     private dataStore: DataStore,
   ) {}
 
-  @Cron(CronExpression.EVERY_10_SECONDS)
+  @Cron('* /15 * * * *')
   async store() {
     const cities = await this.temperatureService.getFrom(DEFAULT_CITIES);
 
